@@ -37,7 +37,7 @@ func main() {
 			if write.LocalAddr().String() == addr.String() {
 				continue
 			}
-			fmt.Printf("\n[%s]: %s\n>", strings.Split(addr.String(), ":")[0], string(buf[:n]))
+			fmt.Printf("\n[%s]: %s\n> ", strings.Split(addr.String(), ":")[0], string(buf[:n]))
 		}
 	}()
 
