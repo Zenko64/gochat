@@ -37,7 +37,7 @@ func main() {
 			if write.LocalAddr().String() == addr.String() {
 				continue
 			}
-			fmt.Printf("[%s]: %s\n", strings.Split(addr.String(), ":")[0], string(buf[:n]))
+			fmt.Printf("\n[%s]: %s\n>", strings.Split(addr.String(), ":")[0], string(buf[:n]))
 		}
 	}()
 
@@ -50,6 +50,11 @@ func main() {
 		}
 
 		txt := scanner.Text()
+		if len(txt) < 1 {
+			continue
+		} else if len(txt) > 1024 {
+			txt = txt[:1024]
+		}
 		write.Write([]byte(txt))
 
 		if err := scanner.Err(); err != nil {
