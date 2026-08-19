@@ -13,8 +13,8 @@ import (
 func main() {
 	rAddr := getAddr("255.255.255.255:5000")
 	lAddr := getAddr("0.0.0.0:5000")
-	readConn := receiveMsg(lAddr)
-	write := connectUdp(rAddr)
+	readConn := listenConn(lAddr)
+	write := dialConn(rAddr)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
@@ -41,14 +41,16 @@ func main() {
 		}
 	}()
 
+	write.Write([]byte("Joined the chat!"))
+
 	for {
 		fmt.Print("> ")
 		if !scanner.Scan() {
 			break
 		}
 
-		cmd := scanner.Text()
-		write.Write([]byte(cmd))
+		txt := scanner.Text()
+		write.Write([]byte(txt))
 
 		if err := scanner.Err(); err != nil {
 			fmt.Fprint(os.Stderr, "Error Reading Stdin: ", err)
@@ -59,12 +61,12 @@ func main() {
 func getAddr(addr string) *net.UDPAddr {
 	udpAddr, err := net.ResolveUDPAddr("udp4", addr)
 	if err != nil {
-		panic("Failed to send message.")
+		panic("Failed to get address.")
 	}
 	return udpAddr
 }
 
-func connectUdp(udpAdrr *net.UDPAddr) *net.UDPConn {
+func dialConn(udpAdrr *net.UDPAddr) *net.UDPConn {
 	conn, err := net.DialUDP("udp4", nil, udpAdrr)
 	if err != nil {
 		panic("Failed to open connection.")
@@ -72,7 +74,7 @@ func connectUdp(udpAdrr *net.UDPAddr) *net.UDPConn {
 	return conn
 }
 
-func receiveMsg(addr *net.UDPAddr) *net.UDPConn {
+func listenConn(addr *net.UDPAddr) *net.UDPConn {
 	conn, err := net.ListenUDP("udp4", addr)
 	if err != nil {
 		panic("Failed to open connection.")
