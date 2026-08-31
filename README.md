@@ -6,20 +6,23 @@ Each message has a max size of 1024 characters, and each chatter is identified b
 How to use:
 Open the binary in multiple computers in the same network, then send a message. all the computers will receive this message.
 
+Tested on Windows.
+
 
 ## Compiling
 > Make sure you have the latest version of Golang installed.  
 
-```sh
-git clone https://github.com/Zenko64/gochat.git && cd gochat
+```bat
+git clone https://github.com/Zenko64/gochat.git
+cd gochat
 ```
 
 To run:
-```sh
+```bat
 go run .
 ```
 
 To build:
-```sh
+```bat
 go build .
 ```
